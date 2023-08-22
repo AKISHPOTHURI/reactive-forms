@@ -47,11 +47,12 @@ export class AppComponent {
     });
   }
 
+  // Async Validators
   isRestrictedUser(control:FormControl) : Promise<any> | Observable<any> {
 
     let promise = new Promise((resolve,reject) =>{
       setTimeout(() => {
-        if(control.value === 'akash'){
+        if(control.value === 'akash'){ //this name is restricted
           resolve({'restricted': true})
         } else {
           resolve(null)
