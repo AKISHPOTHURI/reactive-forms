@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms'
 import { forbiddenNameValidator } from './shared/user-name.validator';
 import { PasswordValidator } from './shared/password.validator'
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -10,13 +11,14 @@ import { PasswordValidator } from './shared/password.validator'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-
+  promise!:any;
+  userIsRestricted = false;
   constructor(private fb: FormBuilder){
     
   }
 
   registrationForm = this.fb.group({
-    userName:['', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/password/)]],
+    userName:['', [Validators.required, Validators.minLength(3), forbiddenNameValidator(/password/)],this.isRestrictedUser],
     password:[''],
     confirmPassword:['',PasswordValidator],
     address:this.fb.group({
@@ -44,4 +46,19 @@ export class AppComponent {
       confirmPassword: 'Dell',
     });
   }
+
+  isRestrictedUser(control:FormControl) : Promise<any> | Observable<any> {
+
+    let promise = new Promise((resolve,reject) =>{
+      setTimeout(() => {
+        if(control.value === 'akash'){
+          resolve({'restricted': true})
+        } else {
+          resolve(null)
+        }
+      }, 2000)
+    } )
+    return promise;
+  }
+
 }

@@ -10,6 +10,7 @@
       <div *ngIf="registrationForm.get('userName')?.invalid && registrationForm.get('userName')?.touched">
         <small *ngIf="registrationForm.get('userName')?.errors?.['required']" class="text-danger">User Name required</small>
         <small *ngIf="registrationForm.get('userName')?.errors?.['minlength']" class="text-danger">Name should min 3 letters</small>
+        <small *ngIf="registrationForm.get('userName')?.errors?.['restricted']" class="text-danger">Name is Restricted</small>
         <small *ngIf="registrationForm.get('userName')?.errors?.['forbiddenName']" class="text-danger">{{registrationForm.get('userName')?.errors?.['forbiddenName']?.value}} as Username not allowed</small>
       </div>
     </div>
