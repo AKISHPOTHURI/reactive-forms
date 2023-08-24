@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms'
 import { forbiddenNameValidator } from './shared/user-name.validator';
 import { PasswordValidator } from './shared/password.validator'
-import { Observable } from 'rxjs';
+import { Observable, exhaustMap, filter, interval, switchMap, take } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -10,11 +11,11 @@ import { Observable } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent{
   promise!:any;
   userIsRestricted = false;
-  constructor(private fb: FormBuilder){
-    
+  constructor(private fb: FormBuilder, private http:HttpClient){
+    this.Maps();
   }
 
   registrationForm = this.fb.group({
@@ -47,6 +48,16 @@ export class AppComponent {
     });
   }
 
+  profileForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+  });
+
+  onSubmit() {
+    // TODO: Use EventEmitter with form value
+    console.warn(this.profileForm.value);
+  }
+
   // Async Validators
   isRestrictedUser(control:FormControl) : Promise<any> | Observable<any> {
 
@@ -60,6 +71,24 @@ export class AppComponent {
       }, 2000)
     } )
     return promise;
+  }
+
+
+  // MergeMap vs ConcatMap vs SwitchMap vs ExhaustMap
+  Maps(){
+    let postIds = interval(1).pipe(
+      filter((val) => val > 0),
+      take(5)
+    );
+    postIds.pipe(
+      switchMap((id) => {
+        return this.http.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+      })
+    )
+    .subscribe((postDetails) => {
+      console.log(postDetails);
+      
+    })
   }
 
 }
