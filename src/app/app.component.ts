@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms'
+import { FormGroup, FormControl, FormBuilder, Validators, NgForm} from '@angular/forms'
 import { forbiddenNameValidator } from './shared/user-name.validator';
 import { PasswordValidator } from './shared/password.validator'
 import { Observable, exhaustMap, filter, interval, switchMap, take } from 'rxjs';
@@ -53,10 +53,9 @@ export class AppComponent{
     lastName: new FormControl(''),
   });
 
-  onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.profileForm.value);
-  }
+ user(data:any){
+  console.log(data);
+ }
 
   // Async Validators
   isRestrictedUser(control:FormControl) : Promise<any> | Observable<any> {

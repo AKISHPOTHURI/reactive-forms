@@ -49,17 +49,17 @@
 
 <div class="container-fluid">
   <p>Template Driven</p>
-  <form [formGroup]="profileForm">
+  <form [formGroup]="profileForm" (ngSubmit)="user(profileForm.value)">
     <p>{{profileForm.value | json}}</p>
     <label for="first-name">First Name: </label>
     <input id="first-name" type="text" formControlName="firstName" class="form-control"
     required minlength="4" ngModel>
-    
+
     <span *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched" style="color: red;">please enter name with min length of 4</span>
     <br>
     <label for="last-name">Last Name: </label>
     <input id="last-name" type="text" formControlName="lastName" class="form-control"
-    required minlength="4">
-  
+    required minlength="4" ngModel>
+    <button   [disabled]="profileForm.invalid" type="submit">Submit</button>
   </form>
 </div>
